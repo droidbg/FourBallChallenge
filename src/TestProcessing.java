@@ -1,13 +1,16 @@
 import processing.core.PApplet;
 
+import java.util.ArrayList;
+
 public class TestProcessing extends PApplet {
-    public static final int WIDTH = 640;
-    public static final int HEIGHT = 480;
-    public static final int DIAMETER = 10;
-    int ballOne = 0;
-    int ballTwo = 0;
-    int ballThree = 0;
-    int ballFour = 0;
+    private static final int X_DIM = 640;
+    private static final int Y_DIM = 480;
+    private static final int DIAMETER = 10;
+    private static final int noOfBalls = 4;
+    private static final int DIVISIONS=noOfBalls+1;
+
+    private static ArrayList<Integer> ballXPositionList;
+
 
     public static void main(String[] args) {
         PApplet.main("TestProcessing", args);
@@ -16,24 +19,28 @@ public class TestProcessing extends PApplet {
     @Override
     public void settings() {
         super.settings();
-        size(WIDTH, HEIGHT);
+        size(X_DIM, Y_DIM);
     }
 
     @Override
     public void setup() {
-
+        final int startingPositionX=0;
+        ballXPositionList = new ArrayList<>();
+        for (int index = 0; index < noOfBalls; index++) {
+            ballXPositionList.add(startingPositionX);
+        }
     }
 
     @Override
     public void draw() {
-        ballOne = drawCircle(ballOne, 1);
-        ballTwo = drawCircle(ballTwo, 2);
-        ballThree = drawCircle(ballThree, 3);
-        ballFour = drawCircle(ballFour, 4);
+        for (int index = 0; index < noOfBalls; index++) {
+            int ballXthPosition = ballXPositionList.get(index);
+            ballXPositionList.set(index,drawCircle(ballXthPosition, index + 1));
+        }
     }
 
     private int drawCircle(int xAxisPos, int unitPerFrame) {
-        ellipse(xAxisPos, (float) (unitPerFrame * HEIGHT) / 5, DIAMETER, DIAMETER);
+        ellipse(xAxisPos, (float) (unitPerFrame * Y_DIM) / DIVISIONS, DIAMETER, DIAMETER);
         return xAxisPos + unitPerFrame;
     }
 
